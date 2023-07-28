@@ -71,7 +71,8 @@ async function run(source: string) {
 
     const {libStd, wasm} = await wasmData;
 
-    let args = ["zig.wasm", "build-exe", "main.zig", "-Dtarget=wasm32-wasi"];
+    // The explicit -fno-llvm -fno-lld is a workaround for https://github.com/ziglang/zig/issues/16586
+    let args = ["zig.wasm", "build-exe", "main.zig", "-Dtarget=wasm32-wasi", "-fno-llvm", "-fno-lld"];
     let env = [];
     let fds = [
         stdin, // stdin
