@@ -1,11 +1,11 @@
-import { EditorState } from "@codemirror/state"
+import { Compartment, EditorState } from "@codemirror/state"
 import { keymap } from "@codemirror/view"
 import { EditorView, basicSetup, minimalSetup } from "codemirror"
 import { JsonRpcMessage, LspClient } from "./lsp";
 import { Sharer } from "./sharer";
 import { indentWithTab } from "@codemirror/commands";
 import { indentUnit } from "@codemirror/language";
-import { oneDark } from "@codemirror/theme-one-dark";
+import { materialDark, materialLight } from "@uiw/codemirror-theme-material";
 
 export default class ZlsClient extends LspClient {
     public worker: Worker;
@@ -84,6 +84,9 @@ let editor = (async () => {
 
     console.log(getPasteHash());
 
+    const editorTheme = new Compartment();
+    const darkMode = window.matchMedia("(prefers-color-scheme: dark)");
+
     let editor = new EditorView({
         extensions: [],
         parent: document.getElementById("editor")!,
@@ -97,9 +100,19 @@ pub fn main() !void {
     try std.io.getStdOut().writer().writeAll("bruh");
 }
 `,
-            extensions: [basicSetup, oneDark, indentUnit.of("    "), client.createPlugin("file:///main.zig", "zig", true), keymap.of([indentWithTab]),],
+            extensions: [
+                basicSetup,
+                editorTheme.of(darkMode.matches ? materialDark : materialLight),
+                indentUnit.of("    "),
+                client.createPlugin("file:///main.zig", "zig", true),
+                keymap.of([indentWithTab]),
+            ],
         }),
     });
+
+    darkMode.addEventListener("change", (e) => editor.dispatch({
+        effects: editorTheme.reconfigure(e.matches ? materialDark : materialLight),
+    }));
 
     await client.plugins[0].updateDecorations();
     await client.plugins[0].updateFoldingRanges();

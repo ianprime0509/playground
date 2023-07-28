@@ -1,8 +1,37 @@
 @use "reset";
-@use "theme";
 
 :root {
-    color-scheme: dark;
+    color-scheme: light;
+
+    --foreground: hsl(0, 0%, 10%);
+    --background: hsl(0, 0%, 90%);
+        --header-background: hsl(0, 0%, 80%);
+
+    --btn-background: hsl(0, 0%, 80%);
+    --btn-background--hover: hsl(0, 0%, 75%);
+
+    --popup-background: hsl(0, 0%, 85%);
+
+    --btn-background--primary: hsl(37, 50%, 76%);
+    --btn-background--primary--hover: hsl(37, 93%, 70%);
+}
+
+@media(prefers-color-scheme: dark) {
+    :root {
+        color-scheme: dark;
+
+        --foreground: hsl(0, 0%, 90%);
+        --background: hsl(0, 0%, 10%);
+        --header-background: hsl(0, 0%, 20%);
+
+        --btn-background: hsl(0, 0%, 20%);
+        --btn-background--hover: hsl(0, 0%, 25%);
+
+        --popup-background: hsl(0, 0%, 15%);
+
+        --btn-background--primary: hsl(37, 50%, 24%);
+        --btn-background--primary--hover: hsl(37, 93%, 30%);
+    }
 }
 
 body, button, input, select {
@@ -17,8 +46,8 @@ html, body {
     margin: 0;
     padding: 0;
     
-    color: theme.$foreground;
-    background-color: theme.$background;
+    color: var(--foreground);
+    background-color: var(--background);
 }
 
 nav {
@@ -29,7 +58,7 @@ nav {
 
     padding: 1rem;
 
-    background-color: hsl(0, 0%, 20%);
+    background-color: var(--header-background);
 }
 
 body {
@@ -112,17 +141,17 @@ button {
     letter-spacing: -0.011em;
 
     cursor: pointer;
-    background-color: theme.$btn-background;
+    background-color: var(--btn-background);
 
     &:hover {
-        background-color: theme.$btn-background--hover;
+        background-color: var(--btn-background--hover);
     }
 
     &.primary {
-        background-color: theme.$btn-background--primary;
+        background-color: var(--btn-background--primary);
 
         &:hover {
-            background-color: theme.$btn-background--primary--hover;
+            background-color: var(--btn-background--primary--hover);
         }
     }
 }
@@ -142,7 +171,7 @@ select {
     letter-spacing: -0.011em;
 
     cursor: pointer;
-    background-color: theme.$btn-background;
+    background-color: var(--btn-background);
 }
 
 input {
@@ -159,7 +188,7 @@ input {
     text-align: center;
     letter-spacing: -0.011em;
 
-    background-color: theme.$btn-background;
+    background-color: var(--btn-background);
 }
 
 #outputs {
@@ -178,7 +207,7 @@ input {
     }
 
     &__tabs {
-        border: 1px solid theme.$foreground;
+        border: 1px solid var(--foreground);
         border-radius: 3px;
 
         padding: 1rem;
@@ -207,7 +236,7 @@ input {
     
     transform: translate(-50%, -50%);
 
-    border: 1px solid theme.$foreground;
+    border: 1px solid var(--foreground);
     border-radius: 3px;
 
     display: none;
@@ -218,7 +247,7 @@ input {
     padding: 2rem;
 
     z-index: 100;
-    background-color: theme.$popup-background;
+    background-color: var(--popup-background);
 
     &.shown {
         display: flex;
